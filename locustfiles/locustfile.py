@@ -4,6 +4,7 @@ SPDX - License - Identifier: LGPL - 3.0 - or -later
 Auteurs : Gabriel C. Ullmann, Fabio Petrillo, 2025
 """
 import random
+from urllib import response
 from locust import HttpUser, task, between
 
 class FlaskAPIUser(HttpUser):
@@ -17,5 +18,20 @@ class FlaskAPIUser(HttpUser):
     @task(1)
     def test_rate_limit(self):
         """Test pour vérifier le rate limiting"""
-        # TODO: écrivez le test
-        print("Test")
+        payload = {
+        "user_id": random.randint(1, 3),
+        "items": [
+                {
+                    "product_id": random.randint(1, 4),
+                    "quantity": random.randint(1, 10)
+                }
+            ]   
+        }
+
+        response = self.client.post(
+            "/store-manager-api/orders",
+            json=payload
+        )
+
+        if response.status_code == 503:
+            print("Rate limit atteint!")
