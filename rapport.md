@@ -110,6 +110,12 @@ Les erreurs 503 apparaissent lorsque le nombre de requêtes dépasse la limite c
 
 **Question 6 : Que se passe-t-il dans le navigateur quand vous faites une requête avec un délai supérieur au timeout configuré (5 secondes) ? Quelle est l'importance du timeout dans une architecture de microservices ? Justifiez votre réponse avec des exemples pratiques.**
 
+Le timeout est important en microservices parce qu’il empêche un service lent ou bloqué de faire attendre tout le système. Par exemple, si Store Manager ne répond pas, KrakenD arrête la requête au lieu de laisser le client ou les autres services attendre indéfiniment.
+
+![alt text](/images/image-q6.png)
+
+<p align="center">6.1 Erreur pour un delai superieur à 5</p>
+
 ## CI/CD
 
 Intégration continue avec les tests:
