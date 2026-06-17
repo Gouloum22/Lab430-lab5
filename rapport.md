@@ -39,6 +39,46 @@ La requête retourne une réponse confirmant que le paiement a été traité ave
 ---------------------------------------
 **Question 4 : Quelle méthode avez-vous dû modifier dans log430-labo05-payment et qu'avez-vous modifiée ? Justifiez avec un extrait de code.**
 
+J’ai modifier la méthode update_status_to_paid(payment_id) dans le microservice log430-labo5-payment, car c’est elle qui traite le paiement et met son statut à payé.
+
+Code modifié:
+
+    def update_status_to_paid(payment_id: int):
+        """Update payment status to paid in MySQL"""
+        if not payment_id:
+            raise ValueError("Vous devez indiquer un ID de paiement.")
+        
+        session = get_sqlalchemy_session()
+
+        try:
+            # Find the payment by ID
+            payment = session.query(Payment).filter(Payment.id == payment_id).first()
+            
+            if not payment:
+                raise ValueError(f"Aucun paiement trouvé avec l'ID {payment_id}")
+            
+            # Update the payment status
+            payment.is_paid = True
+            session.commit()
+            
+            response = requests.put(
+                "http://api-gateway:8080/store-manager-api/orders",
+                json={
+                    "order_id": payment.order_id,
+                    "is_paid": True
+                },
+                headers={"Content-Type": "application/json"},
+                timeout=5
+            )
+
+            response.raise_for_status()
+
+            return {
+                "payment_id": payment_id,
+                "order_id": payment.order_id,
+                "is_paid": True
+            }
+
 ---------------------------------------
 **Question 5 : À partir de combien de requêtes par minute observez-vous les erreurs 503 ? Justifiez avec des captures d'écran de Locust.**
 
