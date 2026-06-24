@@ -136,6 +136,8 @@ Le timeout est important en microservices parce qu’il empêche un service lent
 
 Intégration continue avec les tests:
 
-<p align="center">CI: integration continue sur github</p>
+<p align="center">CI: labo 5</p>
+
+<p align="center">CI: labo 5 - payment</p>
 
 Déploiement continue sur la VM:
