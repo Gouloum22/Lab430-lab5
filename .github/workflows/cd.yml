@@ -34,7 +34,8 @@ jobs:
       - name: Deploy Store Manager
         run: |
           docker-compose down --remove-orphans
-          docker-compose up -d --build
+          docker rm -f store_manager api-gateway || true
+          docker-compose up -d --build mysql redis store_manager krakend
 
       - name: Show deployment containers
         run: docker ps
