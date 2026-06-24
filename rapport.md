@@ -129,12 +129,13 @@ Le timeout est important en microservices parce qu’il empêche un service lent
 <p align="center">7.2 Image des charts</p>
 
 ![alt text](/images/image-q7.3.png)
-![alt text](image.png)
 
 <p align="center">7.3 Image des failures</p>
 
 ## CI/CD
 
 Intégration continue avec les tests:
+
+<p align="center">CI: integration continue sur github</p>
 
 Déploiement continue sur la VM:

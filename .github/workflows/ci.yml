@@ -1,0 +1,55 @@
+name: CI - Store Manager
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "DB_HOST=mysql" > .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_USER=labo05" >> .env
+          echo "DB_PASSWORD=labo05" >> .env
+          echo "DB_NAME=labo05_db" >> .env
+          echo "REDIS_HOST=redis" >> .env
+          echo "REDIS_PORT=6379" >> .env
+          echo "REDIS_DB=0" >> .env
+          echo "KAFKA_HOST=labo7-seulement!" >> .env
+
+      - name: Create Docker network
+        run: docker network create labo05-network || true
+
+      - name: Build containers
+        run: docker compose build
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Wait for services
+        run: sleep 35
+
+      - name: Smoke test - health check
+        run: curl -f http://localhost:5000/health-check
+
+      - name: Smoke test - highest spenders report
+        run: curl -f http://localhost:5000/orders/reports/highest-spenders
+
+      - name: Smoke test - best sellers report
+        run: curl -f http://localhost:5000/orders/reports/best-sellers
+
+      - name: Smoke test - slow endpoint
+        run: curl -f http://localhost:5000/test/slow/2
+
+      - name: Show containers
+        run: docker ps
