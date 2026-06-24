@@ -30,9 +30,9 @@ On obtient un payment id.
 
 <p align="center">2.4 Verification du paiement</p>
 
-Dans POST /payments/process/:id, on envoie un body JSON avec les infos de la commande, comme user_id, product_id et quantity. Le payment_id est dans l’URL, donc le service sait quel paiement traiter.
+Dans POST /payments/process/:id, on envoie du JSON avec les infos de la commande. Le payment_id est dans l’URL, donc le service sait quel paiement traiter.
 
-Avec un service SOA classique, ce ne serait pas forcément le même format : on utiliserait souvent du SOAP/XML, plus structuré et plus lourd que le JSON utilisé ici en REST/microservices.
+Avec un service SOA classique, c'est pas le même format puisqu'on utiliserait souvent du XML, plus structuré et plus lourd que le JSON.
 
 ---
 
@@ -48,7 +48,7 @@ La requête retourne une réponse confirmant que le paiement a été traité ave
 
 **Question 4 : Quelle méthode avez-vous dû modifier dans log430-labo05-payment et qu'avez-vous modifiée ? Justifiez avec un extrait de code.**
 
-J’ai modifier la méthode update_status_to_paid(payment_id) dans le microservice log430-labo5-payment, car c’est elle qui traite le paiement et met son statut à payé.
+J’ai modifier la méthode update_status_to_paid(payment_id) dans le microservice log430-labo5-payment parce que c’est elle qui traite le paiement et met son statut à payé.
 
 Code modifié:
 
@@ -92,7 +92,7 @@ Code modifié:
 
 **Question 5 : À partir de combien de requêtes par minute observez-vous les erreurs 503 ? Justifiez avec des captures d'écran de Locust.**
 
-Les erreurs 503 apparaissent lorsque le nombre de requêtes dépasse la limite configurée dans KrakenD, soit environ 200 requêtes par minute pour POST /store-manager-api/orders. Dans Locust, avec 100 utilisateurs, j’ai observé des erreurs 503 massives : 3613 échecs sur 4041 requêtes, avec environ 50 RPS, soit plus de 3000 requêtes/minute. Cela confirme que le rate limiting de KrakenD bloque les requêtes dépassant la limite.
+Les erreurs 503 apparaissent lorsque le nombre de requêtes dépasse la limite configurée dans KrakenD. Dans Locust, avec 100 utilisateurs, j’ai observé des erreurs 503 massives : 3613 échecs sur 4041 requêtes, avec environ 50 RPS, soit plus de 3000 requêtes/minute. Cela confirme que le rate limiting de KrakenD bloque les requêtes dépassant la limite.
 
 ![alt text](/images/image-q5.1.png)
 
@@ -110,7 +110,7 @@ Les erreurs 503 apparaissent lorsque le nombre de requêtes dépasse la limite c
 
 **Question 6 : Que se passe-t-il dans le navigateur quand vous faites une requête avec un délai supérieur au timeout configuré (5 secondes) ? Quelle est l'importance du timeout dans une architecture de microservices ? Justifiez votre réponse avec des exemples pratiques.**
 
-Le timeout est important en microservices parce qu’il empêche un service lent ou bloqué de faire attendre tout le système. Par exemple, si Store Manager ne répond pas, KrakenD arrête la requête au lieu de laisser le client ou les autres services attendre indéfiniment.
+Le timeout est important en microservices parce qu’il empêche un service de faire attendre tout le système. Si Store Manager ne répond pas, KrakenD arrête la requête au lieu de laisser le client ou les autres services attendre pour toujours.
 
 ![alt text](/images/image-q6.png)
 
@@ -146,9 +146,12 @@ Intégration continue avec les tests:
 
 Déploiement continue sur la VM:
 
+![alt text](/images/image-cd-vm-lab5.png)
+![alt text](/images/image-cd-lab5.png)
+
 <p align="center">CD: labo 5 - store manager</p>
 
-![alt text](image.png)
-![alt text](image-1.png)
+![alt text](/images/image-cd-vm-lab5-payment.png)
+![alt text](/images/image-ci-lab5-payment.png)
 
 <p align="center">CD: labo 5 - payment</p>
