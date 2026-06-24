@@ -136,8 +136,19 @@ Le timeout est important en microservices parce qu’il empêche un service lent
 
 Intégration continue avec les tests:
 
-<p align="center">CI: labo 5</p>
+![alt text](/images/image-ci-lab5.png)
+
+<p align="center">CI: labo 5 - store manager</p>
+
+![alt text](/images/image-ci-lab5-payment.png)
 
 <p align="center">CI: labo 5 - payment</p>
 
 Déploiement continue sur la VM:
+
+<p align="center">CD: labo 5 - store manager</p>
+
+![alt text](image.png)
+![alt text](image-1.png)
+
+<p align="center">CD: labo 5 - payment</p>
